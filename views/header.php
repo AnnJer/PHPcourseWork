@@ -33,21 +33,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="top-bar_sub container-fluid">
         <div class="row">
             <div class="col-md-4 top-forms text-left mt-4"  data-aos="fade-up">
-                <span>Welcome Back!</span>
+                <span>Добро пожаловать!</span>
                 <span class="mx-lg-4 mx-md-2  mx-1">
 
                             <?php if(AuthService::isAuth()) { ?>
                                 <a href="<?= ROOT_DIR.'/logout' ?>">
-                                    <i class="fas fa-lock"></i> Sign Out</a>
+                                    <i class="fas fa-lock"></i> Выйти</a>
 
 							<?php } else {?>
                                 <a href="<?= ROOT_DIR.'/login'?>">
-                                <i class="fas fa-lock"></i> Sign In</a>
+                                <i class="fas fa-lock"></i> Войти</a>
                             <?php }?>
                 </span>
                 <span>
 						<a href="<?= ROOT_DIR.'/register' ?>">
-							<i class="far fa-user"></i> Register</a>
+							<i class="far fa-user"></i> Регистрация</a>
                 </span>
                 <span>
                     <?php if(AuthService::isAdmin()) { ?>
@@ -69,10 +69,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <ul class ="social_list1 mt-4">
 
                    <span  id="basket">
-                       <a id="login-trigger" class="fa fa-shopping-basket" href="#">
-                           Basket<span>&#x25BC;</span>
+                       <a id="login-trigger" class="fa fa-shopping-basket">
+                           Корзина
                        </a>
                    </span>
+<!--                    <div id="basket-content">-->
+<!---->
+<!--                    </div>-->
 
                     <li>
                         <a href="#" class="facebook1 mx-2">
@@ -100,21 +103,5 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
         </div>
 
-
-        <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script>
-            $(document).ready(function(){
-                $('#login-trigger').click(function(){
-                    $(this).next('#login-content').slideToggle();
-                    $(this).toggleClass('active');
-
-                    if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
-                    else $(this).find('span').html('&#x25BC;')
-                })
-            });
-        </script>
 
 </header>

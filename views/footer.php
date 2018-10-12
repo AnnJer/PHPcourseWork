@@ -2,24 +2,25 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-4 footer-grid text-left" data-aos="fade-right">
-                <h3>About US</h3>
-                <p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. lacinia eget consectetur sed, convallis at tellus..</p>
+                <h3>О нас</h3>
+                <p>Пекарня, помешанная на качестве продуктов и вкусе изделия. Готовы вополнить любой Ваш заказ с любовью..</p>
+
                 <div class="read">
-                    <a href="single.html" class="btn btn-primary read-m">Read More</a>
+                    <a href="<?= ROOT_DIR.'/about' ?>" class="btn btn-primary read-m">Детальнее</a>
                 </div>
             </div>
             <!-- subscribe -->
             <div class="col-lg-8 subscribe-main footer-grid text-left" data-aos="fade-left">
-                <h2>Subscribe for hot updates</h2>
+                <h2>Подписаться на горячие обновления</h2>
                 <div class="subscribe-main text-left">
                     <div class="subscribe-form">
                         <form action="#" method="post" class="subscribe_form">
-                            <input class="form-control" type="email" placeholder="Enter your email..." required="">
-                            <button type="submit" class="btn btn-primary submit">Submit</button>
+                            <input class="form-control" type="email" placeholder="Введите email..." required="">
+                            <button type="submit" class="btn btn-primary submit">Принять</button>
                         </form>
 
                     </div>
-                    <p>We respect your privacy.No spam ever!</p>
+                    <p>Мы уважаем вашу конфиденциальность. Никакого спама!</p>
                 </div>
                 <!-- //subscribe -->
                 <div class="footer-cpy text-left">
@@ -52,9 +53,7 @@
                         </ul>
                     </div>
                     <div class="copyrightbottom">
-                        <p>© 2018 Baked. All Rights Reserved | Design by
-                            <a href="http://w3layouts.com/">W3layouts</a>
-                        </p>
+                        <p>© 2018 Baked. Все права защищены</p>
 
                     </div>
                 </div>
@@ -63,6 +62,37 @@
         <!-- //footer -->
     </div>
 </footer>
+
+
+<div class="bgPlaceholder hidden">
+
+</div>
+
+<div class="shopping-cart hidden">
+    <!-- Title -->
+    <div class="title">
+        <span>Shopping Bag</span>
+        <span class="close-btn" id="closeCart"><img src="<?= \core\Linker::linkImage('delete-icn.svg') ?>" alt="close"></span>
+    </div>
+
+    <div class="productsHost">
+
+        </div>
+    </div>
+
+</div>
+
+
+<style>
+    .like-btn {
+        background: url(<?= \core\Linker::linkImage('twitter-heart.png') ?>);
+    }
+    .delete-btn {
+        background: url(<?= \core\Linker::linkImage('delete-icn.svg') ?>) no-repeat center;
+    }
+</style>
+
+
 <!---->
 
 <!-- js -->
@@ -162,7 +192,185 @@
 </a>
 <!-- //Custom-JavaScript-File-Links -->
 <script src="/kursovaya/views/js/bootstrap.js"></script>
+<script src="/kursovaya/views/js/main.js"></script>
 
+
+
+<script>
+
+    $(document).ready(function() {
+        let elem = $('#' + window.location.hash.replace('#', ''));
+
+        if(elem) {
+
+            $('html, body').animate({
+                scrollTop: elem.offset().top - 30
+            }, 1000);
+        }
+    });
+
+    const HOST = '<?= ROOT_DIR ?>';
+    const IMG_HOST = '<?= \core\Linker::linkImage('') ?>';
+
+    let skip = 0;
+    const take = 6;
+    let commonFilters = {};
+
+    function loadPage(num) {
+        skip = num*take;
+
+        let filters = commonFilters;
+
+        filters['skip'] = skip;
+        filters['take'] = take;
+
+        $.ajax({
+            url: HOST+'/api/products',
+            type: 'POST',
+            data: filters,
+            success: function(result) {
+
+                result = JSON.parse(result);
+                let data = result.data;
+                let count = result.count;
+
+                setCards(data, '#productsHomeHost');
+            },
+
+        });
+    }
+
+    let cardsCount = 0;
+    
+    function showPagination() {
+        let paginationHost = $('#pagination-products');
+
+        let pages = Math.ceil(cardsCount / take);
+
+        let html = '';
+
+        for(let i = 0; i < pages; i++) {
+
+
+            html += `
+                <a onclick="loadPage(${i})">${i+1}</a>
+            `;
+        }
+
+        paginationHost.html(html);
+    }
+
+    function getProductsByFilter(filters, hostSelector) {
+        skip = 0;
+
+        commonFilters = filters;
+
+        filters['skip'] = skip;
+        filters['take'] = take;
+
+        $.ajax({
+            url: HOST+'/api/products',
+            type: 'POST',
+            data: filters,
+            success: function(result) {
+
+                result = JSON.parse(result);
+                let data = result.data;
+                let count = result.count;
+
+                cardsCount = count;
+
+                setCards(data, hostSelector);
+            },
+
+        });
+    }
+
+    function setCards(data, hostSelector) {
+        str = '';
+
+        for (let card of data) {
+            str += `
+                  <div class="col-md-6 menu-grid-left" data-aos="fade-down">
+                    <div class="row mt-2">
+                         <div class="col-md-5 menu-img">
+                             <img src="${IMG_HOST + card['img']}" class="img-fluid rounded-circle" alt="">
+                         </div>
+
+                         <div class="col-md-7 menu-img-info mt-4 mt-md-2">
+                             <h5>
+                                <a  href="<?= ROOT_DIR . '/cake/'?>${card['id']}"
+                                    style = "   font-size: 1em;
+                                             color: #7b7d80;
+                                             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.37);
+                                             margin: 0;
+                                             font-family: 'Poiret One', cursive;
+                                             letter-spacing: 1px;
+                                             line-height: 1.4em;
+                                              ">
+                                    ${card['name']}
+                                </a>
+                             </h5>
+                             <p class ="sub-meta" style="   font-size: 1.2em;
+                                                            color: #7b7d80;
+                                                            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.37);
+                                                            line-height: 1.4em;
+                                                            margin: 0;
+                                                            font-family: 'Poiret One', cursive;
+                                                            letter-spacing: 1px;
+                                                            font-weight: 400;">
+                                 Количество: ${card['amount']} шт
+                             </p>
+                             <p class="sub-meta mt-2" style="float: bottom;">
+                                 $${card['price']}
+                             </p>
+
+                             <br><br>
+                            <span  id="basket">
+                                <button onclick="addToCart(${card['id']}, 1); messageBox('Товар добавлен')"  style = "float:bottom;">
+                                    <i class="fa fa-shopping-basket"></i> В корзину
+                                </button>
+                            </span>
+                         </div>
+
+                    </div>
+                    <br>
+                    <br>
+                  </div>
+                 `
+        }
+
+        $(hostSelector).html(
+            str
+        );
+        showPagination();
+    }
+
+    <?php if (isset($params['categories'])) { ?>
+        getProductsByFilter({'equals_id_category': <?= $params['categories'][0]['id'] ?>}, '#productsHomeHost');
+    <?php } ?>
+
+    
+    function messageBox(text) {
+        let mesBox = document.getElementById('messageBox');
+        mesBox.classList.toggle('hidden');
+
+        mesBox.getElementsByClassName('message')[0].innerHTML = text;
+    }
+    
+    function closeMessageBox() {
+        let mesBox = document.getElementById('messageBox');
+        mesBox.classList.toggle('hidden');
+    }
+</script>
+
+
+<div class="hidden" id="messageBox">
+    <div class="head"><i onclick="closeMessageBox()" class="fas fa-times"></i></div>
+    <div class="message">
+
+    </div>
+</div>
 
 </body>
 

@@ -144,11 +144,9 @@ class AuthController
 
         $this->getDB()->table(['clients'])->insert(['name', 'email', 'password', 'confirmed'],
             [[$name, $email, $password, 'False']])->exec()->getQuery;
-//
-//        $mail = mail($email, 'Confirm mail', '
-//             Подтердить имеил '.$_SERVER['HTTP_HOST'].
-//            ROOT_DIR.'/confirm?email='.$email.'&sig='.md5($email.'bober'));
 
+        mail($email, 'My Subject', 'Здравствуйте, перейдите по ссылке, чтобы подтвердить свою почту. http:/localhost/kursovaya/verify?email=annjer1006@gmail.com&sig=H6hae32452c452ce52352');
+     
         $this->redirect(ROOT_DIR.'/login');
 
     }

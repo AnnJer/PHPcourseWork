@@ -27,18 +27,7 @@
 					<li class="nav-item active">
 						<a class="nav-link" href="<?= ROOT_DIR.'/blog' ?>">Блог</a>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-						    aria-expanded="false">
-                                Продукция
-</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="#"></a>
-								<a class="dropdown-item" href="gallery.html">Gallery</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="404.html">Services</a>
-							</div>
-					</li>
+
 					<li class="nav-item">
 						<a class="nav-link" href="<?= ROOT_DIR.'/contact' ?>">Контакты</a>
 					</li>
@@ -60,7 +49,7 @@
 
 	<section class="banner-bottom">
 		<div class="container">
-			<h3 class="tittle">Our Blogs</h3>
+			<h3 class="tittle">Наши блоги</h3>
 			<div class="row inner-sec">
                 <?php foreach($params['posts'] as $post) { ?>
                 <div class="col-lg-6 banner-btm-left">
@@ -77,13 +66,18 @@
                                 </h6>
                                 <p class="paragraph"><?= $post['description'] ?></p>
 
-                                <a href="<?= ROOT_DIR.'/single/'.$post['id'] ?>" class="blog-btn" data-aos="fade-down">Know More</a>
+                                <a href="<?= ROOT_DIR.'/single/'.$post['id'] ?>" class="blog-btn" data-aos="fade-down">Детальнее</a>
                             </div>
-                            <div class="banner-btm-inner a2">
 
+                            <div class="banner-btm-inner a" style="background: url(<?= \core\Linker::linkImage($post['img']) ?>) no-repeat 0px 0px;
+	                                                                background-size: cover;
+                                                                    -webkit-background-size: cover;
+                                                                    -moz-background-size: cover;
+                                                                    -o-background-size: cover;
+                                                                    -ms-background-size: cover;
+                                                                    min-height: 350px;">
                             </div>
                         </div>
-
 
                 </div>
                 <?php } ?>

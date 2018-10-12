@@ -50,7 +50,7 @@
                     <tr>
                         <?php foreach ($params['fields'] as $field) { ?>
 
-                            <td><?= $row[$field['name']] ?></td>
+                            <td><?= Utils::trimText($row[$field['name']]) ?></td>
 
                         <?php } ?>
                         <td><a href="<?= ROOT_DIR.'/admin/update/'.$params['pageName'].'/'.$row['id'] ?>">Update</a></td>
@@ -116,6 +116,7 @@
 
         .tableContent {
             width: 100%;
+            padding: 10px 15px;
         }
 
         .tableTools{
@@ -127,15 +128,24 @@
             justify-content: space-between;
         }
 
-        table{
-            width: 100%;
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
             text-align: left;
-            margin: 30px 10px;
+            border-collapse: separate;
+            border-spacing: 5px;
+            background: #ECE9E0;
+            color: #656665;
+            border: 16px solid #ECE9E0;
+            border-radius: 20px;
+            width: 100%;
         }
-
-        th, td {
-            border-bottom: 1px solid #ddd;
-            padding: 5px 0;
+        th {
+            font-size: 18px;
+            padding: 10px;
+        }
+        td {
+            background: #F5D7BF;
+            padding: 10px;
         }
 
     </style>

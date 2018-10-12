@@ -19,6 +19,8 @@
     $loader->loadDir('controllers');
     $loader->loadDir('core');
 
+    $loader->loadDir('libs');
+
 
     session_start();
 
@@ -44,5 +46,6 @@
         exit;
     }
 
-    $router = new \core\Router();
+
+$router = new \core\Router();
     $router->run();

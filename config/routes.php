@@ -9,8 +9,7 @@
         route('about', 'PageController/showAboutPage'),
         route('blog', 'PageController/showBlogPage'),
         route('single/([0-9]+)', 'PageController/showSinglePage/$1'),
-//        route('login', 'PageController/showLoginPage'),
-//        route('register', 'PageController/showRegisterPage'),
+        route('cake/([0-9]+)', 'PageController/showCakePage/$1'),
 
         // auth
         route('login', 'AuthController/showLoginForm', GET),
@@ -33,6 +32,10 @@
         route('admin/update/([a-z]+)/([0-9]+)', 'AdminController/updateProcessAdminPage/$1/$2', POST),
 
 
+        route('api/products', 'APIController/getProducts'),
+        route('api/products/byId', 'APIController/getProductsById'),
+
+        route('makeOrder', 'OrdersController/newOrder'),
 
         route('confirm', 'AuthController/showLoginForm')
 

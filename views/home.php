@@ -13,32 +13,25 @@
         <div class="carousel-inner" role="listbox">
             <div class="carousel-item active">
                 <div class="carousel-caption">
-                    <h3>Bakers Delight Your
-                        <span>Local Baker</span>
+                    <h3>Пекарня, помешанная
+                        <span>На качестве</span>
                     </h3>
 
                 </div>
             </div>
             <div class="carousel-item item2">
                 <div class="carousel-caption">
-                    <h3>Freshly baked all day
-                        <span>Every day!</span>
+                    <h3>Только свежие, здоровые
+                        <span>и полезные составляющие</span>
                     </h3>
 
                 </div>
             </div>
-            <div class="carousel-item item3">
-                <div class="carousel-caption">
-                    <h3>Bakers Delight Your
-                        <span>Local Baker</span>
-                    </h3>
 
-                </div>
-            </div>
             <div class="carousel-item item4">
                 <div class="carousel-caption">
-                    <h3>Freshly baked all day
-                        <span>Every day!</span>
+                    <h3>Свежеиспеченное весь день
+                        <span>Каждый день!</span>
                     </h3>
 
                 </div>
@@ -86,10 +79,13 @@
                         Продукция
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#"></a>
-                        <a class="dropdown-item" href="gallery.html">Gallery</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="404.html">Services</a>
+                        <?php foreach ($params['categories'] as $category) { ?>
+                        <a class="dropdown-item"
+                           onclick="getProductsByFilter(
+                               {'equals_id_category': <?= $category['id'] ?>}, '#productsHomeHost'
+                                   )"
+                           href="#productsHomeHost"><?= $category['name'] ?></a>
+                        <?php } ?>
 
                     </div>
                 </li>
@@ -114,19 +110,19 @@
             </div>
             <div class="col-lg-6 about-info text-left" data-aos="flip-left" >
                 <h4 class="sub-hd mb-4">Лучшие среди других</h4>
-                <p>Мы кондитерская 'Baked', готовим капкейки и другие разнообразные десерты
+                <p style="font-family: 'Roboto', sans-serif;">Мы кондитерская 'Baked', готовим капкейки и другие разнообразные десерты
                     на заказ. Вся наша продукция обладает изысканным нежным вкусом,
                     характерным для тортов и пирожных премиум класса ручной работы.
                     Философия кондитерской  - быть лучшими, создавая как традиционные
                     сладости по оригинальным рецептам, так и новаторские десерты
                     приготовленные по авторским рецептам.</p>
-                <p class="sup-para mt-2">Неотъемлемой частью философии является
+                <p class="sup-para mt-2" style="font-family: 'Roboto', sans-serif;">Неотъемлемой частью философии является
                     безупречный внешний вид наших работ. В тайных мастерских
                     компании 'Baked' трудится дружная команда кондитеров, которые
                     являются настоящими волшебниками кулинарного искусства.</p>
-                <div class="view my-4">
-                    <a href="single.html" class="btn btn-primary read-m">View More</a>
-                </div>
+
+                <br>
+                <br>
 
                 <img src="images/banner3.jpg" class="img-fluid" alt="">
             </div>
@@ -145,7 +141,16 @@
                     <div class="blog-item text-center">
                         <img src="<?= \core\Linker::linkImage($cake['img']) ?>" alt=" " class="img-fluid rounded-circle" />
                         <div class="floods-text">
-                            <h3><?= $cake['name'] ?></h3>
+                            <h6>
+                                <a  href="<?= ROOT_DIR.'/cake/'.$cake['id'] ?>"
+                                    style="font-size: 2em;
+                                            color: #fff;
+                                            margin: 0;
+                                            font-family: 'Poiret One', cursive;
+                                            letter-spacing: 1px;
+                                            font-weight: 400;"><?= $cake['name'] ?>
+                                </a>
+                            </h6>
                         </div>
                     </div>
                 </li>
@@ -155,18 +160,22 @@
     </div>
 </section>
 <!--//banner-bottom-->
+
+
 <!--/Menu-->
 <section class="banner-bottom menu" id="menu">
     <div class="container">
-        <h3 class="tittle">Our Menu</h3>
+        <h3 class="tittle">Меню</h3>
         <div class="row inner-sec">
             <div class="tabs">
                 <ul class="nav nav-pills mb-5 justify-content-center" id="pills-tab" role="tablist">
 
                     <?php foreach ($params['categories'] as $category) { ?>
-                    <li class="nav-item">
-                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home"
-                           aria-selected="true"><?= $category['name'] ?></a>
+                    <li class="nav-item" onclick="activateTab(this)" style="padding: 0.7em 2em;
+
+letter-spacing: 1px">
+                        <a class="nav-link" id="pills-home-tab"
+                           onclick="getProductsByFilter({'equals_id_category': <?= $category['id'] ?>}, '#productsHomeHost')"><?= $category['name'] ?></a>
                     </li>
                     <?php } ?>
 
@@ -175,30 +184,12 @@
                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                         <div class="menu-grids my-lg-4 my-md-2">
 
-                            <div class="row inner-menu mt-4">
-                                <?php foreach ($params['products'] as $product) { ?>
-                                <div class="col-md-6 menu-grid-left" data-aos="fade-down">
+                            <div class="row inner-menu mt-4" id="productsHomeHost">
 
-                                    <div class="row mt-2">
-
-                                        <div class="col-md-5 menu-img">
-                                            <img src="<?= \core\Linker::linkImage($product['img']) ?>" class="img-fluid rounded-circle" alt="">
-                                        </div>
-                                        <div class="col-md-7 menu-img-info mt-4 mt-md-2">
-                                            <h5><?= $product['name'] ?></h5>
-                                            <p class="sub-meta mt-2">
-
-                                                $<?= $product['price'] ?>
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                    <br><br>
-
-                                </div>
-                              <?php } ?>
                             </div>
+                            <div id="pagination-products">
 
+                            </div>
                         </div>
                     </div>
 
@@ -212,12 +203,30 @@
 
 <!--/blog-->
 <section class="blog_sec container-fluid">
-    <h3 class="tittle">Latest Blogs</h3>
+    <h3 class="tittle">Блог</h3>
     <div class="row inner-sec">
 
-        <?php foreach($params['posts'] as $post) { ?>
+        <style>
+            .reverse-content{
+                display: flex;
+                flex-direction: row-reverse;
+            }
+
+        </style>
+
+        <?php
+        $mod = 1;
+        foreach($params['posts'] as $counter => $post) { ?>
         <div class="col-lg-6 banner-btm-left">
-            <div class="banner-btm-top">
+            <div class="banner-btm-top <?php
+                if ($mod % 2 == 0) {
+                    echo "reverse-content";
+                }
+
+                if (($counter+1) % 2 == 0) {
+                    $mod++;
+                }
+            ?>" >
                 <div class="banner-btm-inner a1 text-left">
                     <div class="blog_date">
 
@@ -227,11 +236,17 @@
                     <h6>
                         <a href="<?= ROOT_DIR.'/single/'.$post['id'] ?>"><?= $post['title'] ?></a>
                     </h6>
-                    <p class="paragraph"><?= $post['description'] ?></p>
+                    <p class="paragraph" ><?= $post['description'] ?></p>
 
-                    <a href="<?= ROOT_DIR.'/single/'.$post['id'] ?>" class="blog-btn" data-aos="fade-down">Know More</a>
+                    <a href="<?= ROOT_DIR.'/single/'.$post['id'] ?>" class="blog-btn" data-aos="fade-down">Детальнее</a>
                 </div>
-                <div class="banner-btm-inner a2">
+                <div class="banner-btm-inner a" style="background: url(<?= \core\Linker::linkImage($post['img']) ?>) no-repeat 0px 0px;
+                        background-size: cover;
+                        -webkit-background-size: cover;
+                        -moz-background-size: cover;
+                        -o-background-size: cover;
+                        -ms-background-size: cover;
+                        min-height: 350px;">
                 </div>
             </div>
         </div>
@@ -244,7 +259,7 @@
 <!--reviews_sec-->
 <section class="banner-bottom reviews_sec">
     <div class="container">
-        <h3 class="tittle cen">Testimonial</h3>
+        <h3 class="tittle cen">Отзывы</h3>
         <div class="inner-sec">
             <div class="flexslider mx-auto">
                 <ul class="slides">
@@ -255,12 +270,12 @@
                                 <img src="<?= \core\Linker::linkImage('t1.jpg') ?>" alt=" " class="img-fluid" />
                             </div>
                             <div class="col-md-9 testimonials_grid text-left">
-                                <h3>Gretchen
-                                    <span>(Customer)</span>
+                                <h3>Олег
+                                    <span>(Покупатель)</span>
                                 </h3>
-                                <i>United States</i>
-                                <p>Maecenas interdum, metus vitae tincidunt porttitor,Proin eget gravida odio. Donec ullamcorper est eu magna quam
-                                    egestas sem, ac scelerisque nisl nibh vel lacus. Proin eget gravida odio. Donec ullamcorper est eu accumsan cursus.</p>
+                                <i>Киев</i>
+                                <p>Очень понравилась пекарня. Там можно и чайку попить. Пекут вкуснейшие булочки.
+                                    Очень понравились плюшки. Купили хлеб, аромат просто необыкновенный! Очень чисто и уютно внутри.</p>
                             </div>
                         </div>
                     </li>
@@ -271,12 +286,12 @@
                                 <img src="<?= \core\Linker::linkImage('t2.jpg') ?>" alt=" " class="img-fluid" />
                             </div>
                             <div class="col-md-9 testimonials_grid text-left">
-                                <h3>Josephine Lee
-                                    <span>Customer</span>
+                                <h3>Ольга
+                                    <span>Покупатель</span>
                                 </h3>
-                                <i>United States</i>
-                                <p>Maecenas interdum, metus vitae tincidunt porttitor,Proin eget gravida odio. Donec ullamcorper est eu magna quam
-                                    egestas sem, ac scelerisque nisl nibh vel lacus. Proin eget gravida odio. Donec ullamcorper est eu accumsan cursus.</p>
+                                <i>Киев</i>
+                                <p>Обширный ассортимент выпечки. Тесто сами замещивают из натуральных продуктов.
+                                    А какой здесь простой хлеб! Успехов компании!</p>
                             </div>
                         </div>
                     </li>
@@ -285,15 +300,15 @@
                             <div class="col-md-3 testimonials_grid-inn">
 
 
-                                <img src="<?= \core\Linker::linkImage('t2.jpg') ?>" alt=" " class="img-fluid" />
+                                <img src="<?= \core\Linker::linkImage('t1.jpg') ?>" alt=" " class="img-fluid" />
                             </div>
                             <div class="col-md-9 testimonials_grid text-left">
-                                <h3>Mark Olson
-                                    <span>Customer</span>
+                                <h3>Марк
+                                    <span>Покупатель</span>
                                 </h3>
-                                <i>United States</i>
-                                <p>Maecenas interdum, metus vitae tincidunt porttitor,Proin eget gravida odio. Donec ullamcorper est eu magna quam
-                                    egestas sem, ac scelerisque nisl nibh vel lacus. Proin eget gravida odio. Donec ullamcorper est eu accumsan cursus.</p>
+                                <i>Киев</i>
+                                <p>Макаруны и круассаны наивкуснейшие! Хлеб отличный!!! Спасибо!! развивайтесь дальше,
+                                    молодцы!! в следующий приезд, надеюсь попробывать что-то нового и выпить чашечку кофе!</p>
                             </div>
                         </div>
                     </li>

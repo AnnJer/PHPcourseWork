@@ -31,17 +31,41 @@
 
 
     <div class="tableContent">
-        <form method="post" action="<?= ROOT_DIR.'/admin/add/'.$params['pageName'] ?>" id="form1">
+
+        <?php
+            if (isset($params['error'])) {
+                ?>
+                <div class="error">
+                    <?= $params['error'] ?>
+                </div>
+                <?php
+            }
+        ?>
+
+        <form method="post" action="<?= ROOT_DIR.'/admin/update/'.$params['pageName'].'/'.$params['data']['id'] ?>" id="form1">
 
 
             <?php foreach($params['fields'] as $field) {
 
-                if( $field['type'] == 'disabled' ||  $field['type'] == 'date' ) {
+                if( $field['type'] == 'disabled'  ) {
                     continue;
                 }
                 ?>
 
-                <input name="<?= $field['name'] ?>" type="<?= $field['type'] ?>" value="<?= $params['data'][$field['name']] ?>">
+                <?php
+                if ($field['type'] == 'bigText') {
+                    ?>
+                    <textarea name="<?= $field['name'] ?>">
+<?=                     $params['data'][$field['name']] ?>
+                     </textarea>
+
+                <?php } else { ?>
+
+                    <input name="<?= $field['name'] ?>" type="<?= $field['type'] ?>"
+                         value="<?= $params['data'][$field['name']] ?>" >
+
+                <?php } ?>
+
 
             <?php } ?>
 
@@ -63,8 +87,19 @@
 <!--                    --><?//}?><!-- >-->
 <!--                <br>-->
 <!--            --><?php //} ?>
+            <input type="submit">
         </form>
-        <button type="submit" form="form1" value="Submit">Submit</button>
+
+        <?php foreach($params['files'] as $fileName => $value) { ?>
+            <form method="post" enctype="multipart/form-data" action="<?= ROOT_DIR.'/admin/update/'.$params['pageName'].'/'.$params['data']['id'] ?>" id="form2">
+                <div class="preview">
+                    <img src="<?= \core\Linker::linkImage($value) ?>">
+                </div>
+                <input type="hidden" name="fieldName" value="<?= $fileName ?>">
+                <input name="<?= $fileName ?>" type="file" accept="image/jpeg,image/png,image/jpg">
+                <input type="submit" name="isFile" value="upload">
+            </form>
+        <?php } ?>
     </div>
 </section>
 
@@ -73,6 +108,15 @@
     *{
         padding: 0;
         margin: 0;
+    }
+
+    .preview img{
+        width: 50%;
+    }
+
+    .preview{
+        display: flex;
+        justify-content: center;
     }
 
     header{
@@ -117,28 +161,28 @@
         flex-wrap: nowrap;
     }
 
-    .tableContent {
+    form{
+        width: 50%;
+        margin: 30px auto;
+        box-shadow: 2px 2px 2px #000;
+        padding: 15px 30px;
+    }
+
+    form input{
         width: 100%;
+        padding: 5px;
+        border: none;
+        border-bottom: 1px solid #0c5460;
+        margin: 15px 0;
     }
 
-    .tableTools{
-        padding: 15px;
-        box-shadow: 1px 1px 1px #000;
-        border: 1px solid #000;
-        margin: 20px 10px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    table{
+    form textarea{
         width: 100%;
-        text-align: left;
-        margin: 30px 10px;
-    }
-
-    th, td {
-        border-bottom: 1px solid #ddd;
-        padding: 5px 0;
+        padding: 5px;
+        border: none;
+        border-bottom: 1px solid #0c5460;
+        margin: 15px 0;
+        height: 400px;
     }
 
 </style>

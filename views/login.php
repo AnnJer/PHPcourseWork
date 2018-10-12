@@ -6,8 +6,6 @@
     <title>Baked a Hotel Category Bootstrap responsive WebTemplate |Login :: w3layouts</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <meta name="keywords" content="Baked a Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
     <script>
         addEventListener("load", function () {
             setTimeout(hideURLbar, 0);
@@ -25,19 +23,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </head>
 
 <body>
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <!--/banner-->
 <header>
     <div class="top-bar_sub container-fluid">
         <div class="row">
             <div class="col-md-4 top-forms text-left mt-4"  data-aos="fade-up">
-                <span>Welcome Back!</span>
+                <span>Добро пожаловать!</span>
                 <span class="mx-lg-4 mx-md-2  mx-1">
 						<a href="<?= ROOT_DIR.'/login' ?>">
-							<i class="fas fa-lock"></i> Sign In</a>
+							<i class="fas fa-lock"></i> Войти</a>
 					</span>
                 <span>
 						<a href="<?= ROOT_DIR.'/register' ?>">
-							<i class="far fa-user"></i> Register</a>
+							<i class="far fa-user"></i> Регистрация</a>
 					</span>
             </div>
             <div class="col-md-4 logo text-center" data-aos="fade-up">
@@ -50,8 +49,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <ul class="social_list1 mt-4">
 
                     <span  id="basket">
-                       <a id="login-trigger" class="fa fa-shopping-basket" href="#">
-                           Basket<span>&#x25BC;</span>
+                       <a id="login-trigger" class="fa fa-shopping-basket">
+                           Корзина
                        </a>
                    </span>
 
@@ -112,19 +111,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <li class="nav-item">
                     <a class="nav-link" href="<?= ROOT_DIR.'/blog' ?>">Блог</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">
-                        Продукция
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#"></a>
-                        <a class="dropdown-item" href="gallery.html">Gallery</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="404.html">Services</a>
 
-                    </div>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= ROOT_DIR.'/contact' ?>">Контакты</a>
                 </li>
@@ -144,7 +131,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!--/main-->
 <section class="banner-bottom">
     <div class="container">
-        <h3 class="tittle">Sign In Now</h3>
+        <h3 class="tittle">Войти</h3>
         <h4 style = "color: red; text-align: center; margin-top: 30px">
             <?php echo $params['error']??"" ?> </h4>
         <div class="row inner-sec">
@@ -160,11 +147,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <label for="exampleInputPassword1 mb-2">Password</label>
                         <input name = 'password' type="password" class="form-control" id="exampleInputPassword1" placeholder="" required="">
                     </div>
-                    <div class="form-check mb-2">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                    </div>
+
                     <button type="submit" class="btn btn-primary submit mb-4">Sign In</button>
+                    <div class="g-recaptcha" data-sitekey="6Ldge10UAAAAAIIlTOqpkbq60rxBgzfM0XobFqIE"></div>
                     <p>
                         <a href="<?= ROOT_DIR.'/register' ?>"> Don't have an account?</a>
                     </p>

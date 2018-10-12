@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ann
- * Date: 20.05.18
- * Time: 22:31
- */
+
 
 require_once 'ControllerTrait.php';
 
@@ -92,12 +87,18 @@ class AdminController
         }
 
         $fieldNames = [];
+        $fileNames = [];
 
         foreach ($fields as $field)
         {
             if ($field['type'] == 'disabled') {
                 continue;
             }
+
+            if ($field['type'] == 'file') {
+                $fileNames[] = $field['name'];
+            }
+
             $fieldNames[] = $field['name'];
         }
 
@@ -109,7 +110,12 @@ class AdminController
 //              continue;
 //            }
 
-            if(!isset($_POST[$name])){
+            if (in_array($name, $fileNames)) {
+                $data[] = $this->uploadImage($name);
+                continue;
+            }
+
+            if (!isset($_POST[$name]) || !$_POST[$name]){
 
                 $params = [
                     'title' => APP_TITLE,
@@ -120,9 +126,15 @@ class AdminController
 
                 return \core\view('adminAdd', $params);
             }
+
+            if (in_array($name, $fileNames)) {
+                $data[] = $this->uploadImage($name);
+                continue;
+            }
+
+
             $data[] = $_POST[$name];
         }
-
 
         $this->getDB()->table([$tableName])->insert($fieldNames,
             [$data])->exec()->getQuery();
@@ -148,11 +160,13 @@ class AdminController
 
 
     public  function deleteAdminPage($tableName, $id){
+        if (!AuthService::isAdmin()) {
+            $this->redirect(ROOT_DIR);
+        }
 
         $this->getDB()->table([$tableName])->delete()->where([\database\sql\equals('id', $id)])->exec();
 
-
-         $this->redirect(ROOT_DIR.'/admin/list/'.$tableName.'/1');
+        $this->redirect(ROOT_DIR.'/admin/list/'.$tableName.'/1');
     }
 
 
@@ -162,7 +176,6 @@ class AdminController
         if (!AuthService::isAdmin()) {
             $this->redirect(ROOT_DIR);
         }
-
 
 
 
@@ -179,13 +192,25 @@ class AdminController
             return "Error";
         }
 
+        $files = [];
+
+        foreach ($fields as $index => $field) {
+            if ($field['type'] == 'file') {
+                $files[$field['name']] = $data[$field['name']];
+                unset($data[$field['name']]);
+                unset($fields[$index]);
+            }
+        }
+
+
         $params = [
             'title' => APP_TITLE,
             'page' => 'home',
             'data' => $data,
             'fields'=>$fields,
             'tab' => ucfirst($tableName),
-            'pageName'=>$tableName
+            'pageName'=>$tableName,
+            'files' => $files
         ];
 
         return \core\view('adminUpdate', $params);
@@ -193,7 +218,69 @@ class AdminController
     }
 
 
+    private function uploadImage($fieldName) {
+        $target_dir = ROOT."/images/";
+        $target_file = $target_dir . basename($_FILES[$fieldName]["name"]);
+        $fileName = basename($_FILES[$fieldName]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        // Check if image file is a actual image or fake image
+        if(isset($_POST["submit"])) {
+            $check = getimagesize($_FILES[$fieldName]["tmp_name"]);
+            if($check !== false) {
+                echo "File is an image - " . $check["mime"] . ".";
+                $uploadOk = 1;
+            } else {
+                echo "File is not an image.";
+                $uploadOk = 0;
+            }
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            echo "Sorry, file already exists.";
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" ) {
+            echo "Sorry, only JPG, JPEG, PNG files are allowed.";
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            echo "Sorry, your file was not uploaded.";
+        // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES[$fieldName]["tmp_name"], $target_file)) {
+                echo "The file ". basename( $_FILES[$fieldName]["name"]). " has been uploaded.";
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+            }
+        }
+
+        return $fileName;
+    }
+
+
     public function updateProcessAdminPage($tableName, $id){
+
+        if (!AuthService::isAdmin()) {
+            $this->redirect(ROOT_DIR);
+        }
+
+
+        if (isset($_POST['isFile'])) {
+            $fieldName = $_POST['fieldName'];
+            $fileName = $this->uploadImage($fieldName);
+
+            $data = [
+                $fieldName => $fileName
+            ];
+
+            $this->getDB()->table([$tableName])->update($data)
+                ->where([\database\sql\equals('id', $id)])->exec();
+            $this->redirect(ROOT_DIR.'/admin/list/'.$tableName.'/1');
+        }
+
 
         $fields = $this->getDB()->table(['fields_meta'])
             ->select()->where([\database\sql\equals('table_name', $tableName)])->exec()->getData();
@@ -206,6 +293,11 @@ class AdminController
             if ($field['type'] == 'disabled') {
                 continue;
             }
+
+            if ($field['type'] == 'file') {
+                continue;
+            }
+
             $fieldNames[] = $field['name'];
         }
 
@@ -217,7 +309,7 @@ class AdminController
 //              continue;
 //            }
 
-            if(!isset($_POST[$name])){
+            if(!isset($_POST[$name])  || !$_POST[$name]){
 
                 $params = [
                     'title' => APP_TITLE,
@@ -226,13 +318,19 @@ class AdminController
                     'error' => 'Вы не заполнили все поля'
                 ];
 
-                return \core\view('adminAdd', $params);
+
+
+                return \core\view('adminUpdate', $params);
             }
-            $data[] = $_POST[$name];
+            $data[$name] = $_POST[$name];
+
+
         }
 
 
-        $ttt = $this->getDB()->table([$tableName])->update($data)->where([\database\sql\equals('id', $id)])->exec();
+
+         $this->getDB()->table([$tableName])->update($data)
+            ->where([\database\sql\equals('id', $id)])->exec();
 
 
         $params = [
@@ -241,7 +339,6 @@ class AdminController
             'data' => $data,
             'fields' => $fields,
             'tab' => ucfirst($tableName),
-            'ttt'=>$ttt,
             'pageName'=>$tableName
         ];
 

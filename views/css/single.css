@@ -453,3 +453,8 @@ h5.mt-0 {
 @media screen and (max-width: 320px) {}
 
 /* //blog responsive code */
+
+
+.float-right{
+    float: right!important;
+}

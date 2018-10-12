@@ -29,17 +29,60 @@
     </div>
 
 
+
+<!--    <form method="post" action="--><?//= ROOT_DIR.'/admin/add/'.$params['pageName'] ?><!--" id="form1">-->
+<!--        --><?php //foreach ($params['fields'] as $field) {?>
+<!--        <div class="group">-->
+<!--                <input  name="--><?//= $field['name'] ?><!--"-->
+<!--                    --><?php //if($field['type']=='file'){?>
+<!--                        accept="image/jpeg,image/png"-->
+<!--                    --><?//}?>
+<!--                        type="--><?//= $field['type'] ?><!--" required >-->
+<!--                <span class="bar"></span>-->
+<!--                <label>--><?php //if ($field['name'] == 'id' ) {continue;} ?>
+<!--                    --><?//= $field['name'] ?><!--</label>-->
+<!---->
+<!--        </div>--><?php //} ?>
+<!--    </form>-->
+<!--    <button type="submit" form="form1" value="Submit">Submit</button>-->
+<!---->
+
+
+
     <div class="tableContent">
-        <form method="post" action="<?= ROOT_DIR.'/admin/add/'.$params['pageName'] ?>" id="form1">
+
+        <?php
+        if (isset($params['error'])) {
+            ?>
+            <div class="error">
+                <?= $params['error'] ?>
+            </div>
+            <?php
+        }
+        ?>
+
+        <form method="post" action="<?= ROOT_DIR.'/admin/add/'.$params['pageName'] ?>" id="form1" enctype="multipart/form-data">
             <?php foreach ($params['fields'] as $field) {
 
-                if ($field['name'] == 'id' ) {continue;}
+                if ($field['name'] == 'id' ) {continue;} ?>
+                <?= $field['name'] ?>
+
+                <?php
+                 if ($field['type'] == 'bigText') {
                 ?>
-                <?= $field['name'] ?>:
-                <input name="<?= $field['name'] ?>" type="<?= $field['type'] ?>"
-                    <?php if($field['type']=='file'){?>
-                         accept="image/jpeg,image/png"
-                    <?}?> >
+                     <textarea name="<?= $field['name'] ?>">
+
+                     </textarea>
+
+                <?php } else { ?>
+
+                     <input name="<?= $field['name'] ?>" type="<?= $field['type'] ?>"
+                         <?php if($field['type']=='file'){?>
+                             accept="image/jpeg,image/png"
+                         <?}?> >
+
+                <?php } ?>
+
                 <br>
             <?php } ?>
         </form>
@@ -49,6 +92,8 @@
 
 
 <style>
+
+
     *{
         padding: 0;
         margin: 0;
@@ -91,8 +136,8 @@
     }
 
     .content{
-        display: flex;
-        justify-content: flex-start;
+       display: flex;
+        ju dstify-content: flex-start;
         flex-wrap: nowrap;
     }
 
@@ -109,16 +154,84 @@
         justify-content: space-between;
     }
 
-    table{
-        width: 100%;
-        text-align: left;
-        margin: 30px 10px;
-    }
+    /*label {*/
+        /*color: #999;*/
+        /*font-size: 18px;*/
+        /*position: absolute;*/
+        /*pointer-events: none;*/
+        /*left: 10px;*/
+        /*top: 15px;*/
+        /*transition: 0.2s ease all;*/
+        /*-moz-transition: 0.2s ease all;*/
+        /*-webkit-transition: 0.2s ease all;*/
+    /*}*/
 
-    th, td {
-        border-bottom: 1px solid #ddd;
-        padding: 5px 0;
-    }
+    /*!* active state *!*/
+    /*input:focus ~ label, input:valid ~ label {*/
+        /*top: -15px;*/
+        /*font-size: 14px;*/
+        /*color: #5264AE;*/
+    /*}*/
+
+
+    /*.bar {*/
+        /*position: relative;*/
+        /*display: block;*/
+        /*width: 320px;*/
+    /*}*/
+    /*.bar:before, .bar:after {*/
+        /*content: "";*/
+        /*height: 2px;*/
+        /*width: 0;*/
+        /*bottom: 0;*/
+        /*position: absolute;*/
+        /*background: #5264AE;*/
+        /*transition: 0.2s ease all;*/
+        /*-moz-transition: 0.2s ease all;*/
+        /*-webkit-transition: 0.2s ease all;*/
+    /*}*/
+    /*.bar:before {*/
+        /*left: 50%;*/
+    /*}*/
+    /*.bar:after {*/
+        /*right: 50%;*/
+    /*}*/
+
+    /*!* active state *!*/
+    /*input:focus ~ .bar:before,*/
+    /*input:focus ~ .bar:after {*/
+        /*width: 50%;*/
+    /*}*/
+
+
+    /*table{*/
+        /*width: 100%;*/
+        /*text-align: left;*/
+        /*margin: 30px 10px;*/
+    /*}*/
+
+    /*th, td {*/
+        /*border-bottom: 1px solid #ddd;*/
+        /*padding: 5px 0;*/
+    /*}*/
+
+
+    /*.group {*/
+        /*position: relative;*/
+        /*margin-bottom: 30px;*/
+    /*}*/
+
+    /*input {*/
+        /*font-size: 16px;*/
+        /*padding: 10px;*/
+        /*display: block;*/
+        /*width: 300px;*/
+        /*border: none;*/
+        /*border-bottom: 1px solid #ccc;*/
+    /*}*/
+    /*input:focus {*/
+        /*outline: none;*/
+    /*}*/
 
 </style>
 

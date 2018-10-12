@@ -10,11 +10,11 @@ class PageController
 //        $bestSeller = $this->getDB()->query('SELECT * FROM `es` WHERE id = :key1', ['key1' => 1]);
 
 
-        $bestSeller = $this->getDB()->table(['products'])->select(['name', 'img'])->
+        $bestSeller = $this->getDB()->table(['products'])->select()->
                              limit(6)->exec()->getData();
 
 
-        $categories = $this->getDB()->table(['category'])->select(['name'])->exec()->getData();
+        $categories = $this->getDB()->table(['category'])->select(['id', 'name'])->exec()->getData();
 
 
         $products = $this->getDB()->table(['products'])->select(['name', 'price', 'img'])->
@@ -112,6 +112,24 @@ class PageController
             //'posts' => $posts
         ];
         return \core\view('register', $params);
+    }
+
+    public function showCakePage($id){
+
+
+        $cake = $this->getDB()
+            ->table(['products'])->select()->where([\database\sql\equals('id', $id)])->exec()->getData();
+
+        $params = [
+            'title' => APP_TITLE,
+            'page' => 'blog',
+            'cake' => $cake,
+            'category' => $this->getDB()->select(['name'])->table(['category'])
+                ->where([\database\sql\equals('id', $cake[0]['id_category'])])->exec()->getData()[0]['name'],
+            'seeAlso' => $this->getDB()
+                ->table(['products'])->select()->orderBy(['RAND()'])->limit(4)->exec()->getData()
+        ];
+        return \core\view('cake', $params);
     }
 
 }

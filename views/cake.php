@@ -110,19 +110,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <li class="nav-item">
                     <a class="nav-link" href="<?= ROOT_DIR.'/blog' ?>">Блог</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">
-                        Продукция
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#"></a>
-                        <a class="dropdown-item" href="gallery.html">Gallery</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="404.html">Services</a>
-
-                    </div>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= ROOT_DIR.'/contact' ?>">Контакты</a>
                 </li>
@@ -136,9 +123,66 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!--//nav-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
-        <a href="index.html">Home</a>
+        <a href="<?= ROOT_DIR ?>/">Home</a>
     </li>
-    <li class="breadcrumb-item active">Signin</li>
+    <li class="breadcrumb-item active"><?= $params['cake'][0]['name'] ?></li>
 </ol>
 
-<!--/main-->
+
+<section class="banner-bottom" style="padding-top: 30px">
+    <div class="container">
+        <?php foreach ($params['cake'] as $cake) {?>
+        <div class="row inner-sec">
+
+            <div class="col-lg-8 left-blog-info text-left" style="display: flex; justify-content: flex-start">
+
+                    <div class="blog-grid-top">
+
+                        <div class="blog_info_left_grid" style="width: 300px">
+                            <img style="width: 100%" src="<?= \core\Linker::linkImage($cake['img']) ?>" class="img-fluid" alt="">
+                        </div>
+
+                    </div>
+                    <div class="info" style="margin-left: 30px; width: 100%; margin-top: -10px">
+                        <h3 class="tittle"><?= $cake['name'] ?></h3>
+                        <div style="margin: 30px 0 0 20px;">
+                            <div>
+                                Категория: <?= $params['category'] ?>
+                            </div>
+                            <div>
+                                Цена: <?= $cake['price'] ?>$
+                            </div>
+                        </div>
+                        <div  id="basket" style="margin: 30px 0 0 20px;">
+                                <button onclick="addToCart(<?= $cake['id'] ?>, 1); messageBox('Товар добавлен')"  style = "float:bottom; width: 130px">
+                                    <i class="fa fa-shopping-basket"></i> В корзину
+                                </button>
+                        </div>
+                    </div>
+            </div>
+
+
+            <h3 style="display: block; width: 100%; margin-top: 50px">Посмотрите так же:</h3>
+
+            <div class="cards" style="display: flex; justify-content: center;">
+                <?php foreach ($params['seeAlso'] as $cake) { ?>
+                    <div  style="width: 20%; margin: 10px 20px">
+                        <div class="img">
+                            <img style="width: 100%; height: 200px" src="<?= \core\Linker::linkImage($cake['img']) ?>">
+                        </div>
+                        <div>
+                            <h5 style="margin-top: 20px"><a href="<?= ROOT_DIR.'/cake/'.$cake['id'] ?>"><?= $cake['name'] ?></a></h5>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+            <?php } ?>
+        </div>
+
+
+    </div>
+</section>
+
+
+
+<?php \core\view('footer', $params)->show(); ?>

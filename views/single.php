@@ -28,18 +28,6 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="<?= ROOT_DIR.'/blog' ?>">Блог</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">
-                        Продукция
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#"></a>
-                        <a class="dropdown-item" href="gallery.html">Gallery</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="404.html">Services</a>
-                    </div>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= ROOT_DIR.'/contact' ?>">Контакты</a>
                 </li>
@@ -58,27 +46,37 @@
 <!--/main-->
 <section class="banner-bottom">
     <div class="container">
-        <h3 class="tittle">Blog Single</h3>
+        <?php foreach ($params['singlePost'] as $singlePost) {?>
+        <h3 class="tittle"><?= $singlePost['title'] ?></h3>
         <div class="row inner-sec">
             <!--left-->
             <div class="col-lg-8 left-blog-info text-left">
 
-                <?php foreach ($params['singlePost'] as $singlePost) {?>
+
                 <div class="blog-grid-top">
                     <div class="blog_info_left_grid mb-4">
                         <img src="<?= \core\Linker::linkImage($singlePost['img']) ?>" class="img-fluid" alt="">
                     </div>
-                    <h3><?= $singlePost['title'] ?></h3>
+
                     <p class="para my-4"><?= $singlePost['text'] ?></p>
                 </div>
-                <?php } ?>
 
                 <div class="comment-top">
-                    <h4>Comments</h4>
+                    <h4 style="font-size: 2em;
+                               color: #2c363e;
+                                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.37);
+                                margin-bottom: 1em;
+                                font-family: 'Poiret One', cursive;
+                                letter-spacing: 1px;
+                                font-weight: 400;">
+                        Comments
+                    </h4>
                     <br>
                     <div class="media"><?php foreach($params['comment'] as $comment) {?>
                         <img src="<?= \core\Linker::linkImage($comment['img']) ?>" alt="" class="img-fluid" />
-                        <div class="media-body">
+                        <div class="media-body" style="font-weight: 400;
+line-height: 1.5;
+color: #212529;">
                             <h5 class="mt-0"><?= $comment['author'] ?></h5>
                             <p><?= $comment['comment'] ?></p>
                             <?php } ?>
@@ -91,6 +89,20 @@
                         </div>
                     </div>
 
+                </div>
+                <div class="comment-top">
+                    <h4>Leave a Comment</h4>
+                    <div class="comment-bottom">
+                        <form action="#" method="post">
+                            <input class="form-control" type="text" name="Name" placeholder="Name" required="">
+                            <input class="form-control" type="email" name="Email" placeholder="Email" required="">
+
+                            <input class="form-control" type="text" name="Subject" placeholder="Subject" required="">
+
+                            <textarea class="form-control" name="Message" placeholder="Message..." required=""></textarea>
+                            <button type="submit" class="btn btn-primary submit">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -169,8 +181,8 @@
                 </div>
 
             </aside>
-            <!--//right-->
         </div>
+        <?php } ?>
     </div>
 </section>
 <!--//main-->

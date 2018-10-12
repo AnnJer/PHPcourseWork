@@ -27,18 +27,7 @@
 					<li class="nav-item">
 						<a class="nav-link" href="<?= ROOT_DIR.'/blog' ?>">Блог</a>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-						    aria-expanded="false">
-                            Продукция
-</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="#"></a>
-								<a class="dropdown-item" href="gallery.html"></a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="404.html">Services</a>
-							</div>
-					</li>
+
 					<li class="nav-item">
 						<a class="nav-link active" href="<?= ROOT_DIR.'/contact' ?>">Контакты</a>
 					</li>
